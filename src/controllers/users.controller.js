@@ -167,9 +167,10 @@ export default class UsersController {
             });
             let token = generateToken({ email, role, cart, name, id, cartId, lastConnection, lastName, isAllDocs, avatar, documents });
             res.cookie("cookieToken", token, {
-                httpOnly: true,
+                httpOnly: false,
                 maxAge: 60 * 60 * 1000,
-                secure: process.env.USERCOOKIESECRET
+                secure: process.env.USERCOOKIESECRET,
+                sameSite: "none"
             }).status(200).send({ email, role, cart, name, id, cartId, lastConnection, isAllDocs, lastName, avatar, documents });
         } catch (error) {
             next(error)
