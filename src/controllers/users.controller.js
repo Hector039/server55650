@@ -227,9 +227,10 @@ export default class UsersController {
             const id = user._id;
             let token = generateToken({ email, role, cart, name, id, cartId });
             res.cookie("cookieToken", token, {
-                httpOnly: true,
+                httpOnly: false,
                 maxAge: 60 * 60 * 1000,
-                secure: process.env.USERCOOKIESECRET
+                secure: process.env.USERCOOKIESECRET,
+                sameSite: "none"
             }).redirect("https://hector039.github.io/client55650/");
         } catch (error) {
             next(error)
@@ -250,7 +251,7 @@ export default class UsersController {
             }
             await mailer({ mail: email, name: user.firstName },
             `Haz click en el enlace para restaurar tu contraseña: <a href="https://hector039.github.io/client55650/forgot/${email}">Restaurar</a>`)
-            res.cookie("tempCookie", "temporalCookie", { maxAge: 1000 * 60 * 60 }).status(200).send(`Se envió la solicitud de restauración a ${email}`);
+            res.cookie("tempCookie", "temporalCookie", { maxAge: 1000 * 60 * 60, httpOnly: false, sameSite: "none" }).status(200).send(`Se envió la solicitud de restauración a ${email}`);
         } catch (error) {
             next(error)
         }
@@ -327,9 +328,10 @@ export default class UsersController {
         });
         let token = generateToken({ email, role, cart, name, id, cartId, lastConnection, lastName, isAllDocs, avatar, documents, photo });
         res.cookie("cookieToken", token, {
-            httpOnly: true,
+            httpOnly: false,
             maxAge: 60 * 60 * 1000,
-            secure: process.env.USERCOOKIESECRET
+            secure: process.env.USERCOOKIESECRET,
+            sameSite: "none"
         }).redirect("https://hector039.github.io/client55650/");
     }
 
@@ -354,9 +356,10 @@ export default class UsersController {
         });
         let token = generateToken({ email, role, cart, name, id, cartId, lastConnection, lastName, isAllDocs, avatar, documents, photo });
         res.cookie("cookieToken", token, {
-            httpOnly: true,
+            httpOnly: false,
             maxAge: 60 * 60 * 1000,
-            secure: process.env.USERCOOKIESECRET
+            secure: process.env.USERCOOKIESECRET,
+            sameSite: "none"
         }).redirect("https://hector039.github.io/client55650/");
     }
 }
