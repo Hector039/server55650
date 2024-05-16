@@ -15,7 +15,7 @@ import { profilesImgPath } from "../data/profiles/pathProfiles.js";
 
 
 const corsOptions = {
-    origin: "https://hector039.github.io/client55650/",
+    origin: "https://hector039.github.io",
     credentials: true,
 };
 
