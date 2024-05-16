@@ -1,0 +1,301 @@
+paths:
+  /api/products:
+    get:
+      summary: Obtiene los productos para mostrar según la persistencia.
+      tags: 
+        - Products
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Límite de productos recibidos por solicitud (no requerido para persistencia FileSystem)
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Número de página para mostrar (sólo en paginación de Persistencia en Database)
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: asc - desc para ordenar los productos por precio (requerido en Persistencia Database. Default = todos)
+        - in: query
+          name: category
+          schema:
+            type: string
+          description: Filtrado de productos por categoría. (muebles, iluminación, ropa de cama, electrodomésticos, cocina, tecnologia, accesorios, decoración). (requerido en Persistencia Database. Default = "todos")
+      responses:
+        "200":
+          description: Se recibieron los productos correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "500":
+          description: Error interno del servidor, los errores varían según el código. ver archivo "enum.js" en "tools".
+    post:
+      summary: Crea un producto.
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/createProduct"
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Se creó el producto correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Product"
+        "401":
+           description: Credenciales faltantes o erróneas.
+        "500":
+          description: Error interno del servidor, los errores varían según el código. ver archivo "enum.js" en "tools".
+  /api/products/{pid}:
+    get:
+      summary: Obtiene el producto para mostrar por su ID.
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto solicitado
+        schema:
+          oneOf:
+            - type: String
+            - type: integer
+      responses:
+        "200":
+          description: Se recibió el producto correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Product"
+        "404":
+           description: ID inexistente o errónea. Producto no encontrado en la base de datos.
+        "500":
+          description: Error interno del servidor, los errores varían según el código. ver archivo "enum.js" en "tools".
+    put:
+      summary: Actualiza el producto.
+      security:
+        - cookieAuth: []
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto solicitado
+        schema:
+          oneOf:
+            - type: String
+            - type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateProduct"
+      responses:
+        "200":
+          description: Se actualizó el producto correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Product"
+        "401":
+           description: Credenciales faltantes o erróneas.
+        "404":
+           description: ID inexistente o errónea. Producto no encontrado en la base de datos.
+        "500":
+          description: Error interno del servidor, los errores varían según el código. ver archivo "enum.js" en "tools".
+    delete:
+      summary: Borra el producto.
+      security:
+        - cookieAuth: []
+      tags:
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto solicitado
+        schema:
+          oneOf:
+            - type: String
+            - type: integer
+      responses:
+        "200":
+          description: Se recibió el producto correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Product"
+        "401":
+           description: Credenciales faltantes o erróneas.
+        "404":
+           description: ID inexistente o errónea. Producto no encontrado en la base de datos.
+        "500":
+          description: Error interno del servidor, los errores varían según el código. ver archivo "enum.js" en "tools".
+  /api/products/searchproducts/{text}:
+    get:
+      summary: Busca el/los producto/s por nombre en la base de datos según el texto ingresado (solo usuarios admin y premium).
+      security:
+        - cookieAuth: []
+      tags:
+        - Products
+      parameters:
+      - name: text
+        in: path
+        required: true
+        description: Nombre del/los producto/s solicitado/s
+        schema:
+          oneOf:
+            - type: String
+            - type: integer
+      responses:
+        "200":
+          description: Se encontró el/los producto/s correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Product"
+        "403":
+           description: Credenciales faltantes o erróneas.
+        "500":
+          description: Error interno del servidor, los errores varían según el código. ver archivo "enum.js" en "tools".
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: cookieToken
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          oneOf:
+            - type: ObjectId
+            - type: integer
+          description: Id auto generado según la persistencia.
+        title: 
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripción breve del producto
+        code:
+          type: String
+          description: Código alfanumérico único para cada producto
+        price:
+          type: Number
+          description: Precio del producto
+        stock:
+          type: Number
+          description: Cantidad de productos existentes en depósito
+        category:
+          type: String
+          description: Categoría del producto.
+        thumbnails:
+          type: String
+          description: Link de la imagen del producto
+        status:
+          type: Boolean
+          description: Disponibilidad del producto
+        owner:
+          type: String
+          description: ID del usuario que creó el producto. (solo usuarios admin o premium)
+      example:
+        _id: ObjectID("6abcd1345qxsadfd91as0") / 12
+        title: Silla de oficina
+        description: Silla de oficina con soporte lumbar color negro
+        code: sil001
+        price: 80000
+        stock: 5
+        category: muebles
+        thumbnails: https://dummyimage.com/300/09f/fff.png
+        status: true
+        owner: ObjectID("6abcd1345qxsadfd91wes1") / 14
+  requestBodies:
+    createProduct:
+      type: object
+      properties:
+        title: 
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripción breve del producto
+        code:
+          type: String
+          description: Código alfanumérico único para cada producto
+        price:
+          type: Number
+          description: Precio del producto
+        stock:
+          type: Number
+          description: Cantidad de productos existentes en depósito
+        category:
+          type: String
+          description: Categoría del producto.
+        thumbnails:
+          type: String
+          description: Link de la imagen del producto
+        owner:
+          type: String
+          description: ID del usuario que creó el producto. (solo usuarios admin o premium)
+      example:
+        title: Silla de oficina
+        description: Silla de oficina con soporte lumbar color negro
+        code: sil001
+        price: 80000
+        stock: 5
+        category: muebles
+        thumbnails: https://dummyimage.com/300/09f/fff.png
+        owner: ObjectID("6abcd1345qxsadfd91wes1") / 14
+    updateProduct:
+      type: object
+      properties:
+        title: 
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripción breve del producto
+        code:
+          type: String
+          description: Código alfanumérico único para cada producto (requerirá cambiarlo en cada actualización)
+        price:
+          type: Number
+          description: Precio del producto
+        stock:
+          type: Number
+          description: Cantidad de productos existentes en depósito
+        category:
+          type: String
+          description: Categoría del producto.
+        thumbnails:
+          type: String
+          description: Link de la imagen del producto
+        status:
+          type: Boolean
+          description: Disponibilidad del producto
+      example:
+        title: Silla de oficina
+        description: Silla de oficina con soporte lumbar color negro
+        code: sil001
+        price: 80000
+        stock: 5
+        category: muebles
+        thumbnails: https://dummyimage.com/300/09f/fff.png
+        status: true

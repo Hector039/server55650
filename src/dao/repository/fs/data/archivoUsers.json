@@ -1,0 +1,66 @@
+[
+    {
+        "_id": 1,
+        "firstName": "hector",
+        "lastName": "mandril",
+        "email": "elector22@gmail.com",
+        "password": "$2b$10$g0O9okimUPlogjRmxLhYbe4FnRTpaIbX3R5m7hqcfFedo8DmNiRt6",
+        "role": "user",
+        "cart": 7,
+        "verified": true,
+        "documents": [],
+        "last_connection": "10/05/2022, 11:14:41"
+    },
+    {
+        "_id": 3,
+        "firstName": "daniel",
+        "lastName": "Scioli",
+        "email": "dani@gmail.com",
+        "password": "$2b$10$GDHoJE5QQDAsFt/eFi7tv.2udduVKsqq4CYpYWusW9QJxr9KRnVjO",
+        "role": "user",
+        "cart": 9,
+        "verified": true,
+        "documents": [],
+        "last_connection": "09/05/2024, 11:14:41"
+    },
+    {
+        "_id": 5,
+        "firstName": "Coder",
+        "lastName": "Coder",
+        "email": "adminCoder@coder.com",
+        "password": "$2b$10$IcOzTPdDYQO5BNDDA33//e/XxTapF/LpLhkmHgqxmKnAVPOn/6F86",
+        "role": "admin",
+        "idgoogle": null,
+        "idgithub": null,
+        "cart": 11,
+        "verified": true,
+        "documents": [],
+        "last_connection": "10 05 2024, 8:32:58 pm"
+    },
+    {
+        "_id": 14,
+        "firstName": "Vladimir",
+        "lastName": "Putin",
+        "email": "vladi@gmail.com",
+        "password": "$2b$10$3tu3W/u9NmEq3q1M5Vv5COQTtAgOimefs0qZoa3/49ux9FPp8ueJy",
+        "role": "user",
+        "cart": 36,
+        "verified": true,
+        "documents": [],
+        "last_connection": "15 05 2024, 10:56:29 pm",
+        "avatar": "http://localhost:8080/vladi@gmail.com_15_5_2024_www.YTS.MX.jpg"
+    },
+    {
+        "_id": 17,
+        "firstName": "Chaqueño",
+        "lastName": "Palavecino",
+        "email": "pala@gmail.com",
+        "password": "$2b$10$a7pSb9fqtGAplvvyIdpqvuERP9zp9mNsNBL1vepwZOx.q7IO8Sxg6",
+        "role": "premium",
+        "cart": 39,
+        "verified": true,
+        "documents": [],
+        "last_connection": "15 05 2024, 10:51:17 pm",
+        "avatar": "http://localhost:8080/pala@gmail.comMon_May 06 2024www.YTS.MX.jpg"
+    }
+]

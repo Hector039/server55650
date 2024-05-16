@@ -1,0 +1,193 @@
+paths:
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene el carrito para mostrar por su ID.
+      security:
+        - cookieAuth: []
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id del carrito solicitado
+        schema:
+          oneOf:
+            - type: String
+            - type: integer
+      responses:
+        "200":
+          description: Se recibió el carrito correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "401":
+           description: Credenciales faltantes o erróneas.
+        "500":
+          description: Error interno del servidor, los errores varían según el código. ver archivo "enum.js" en "tools".
+    delete:
+      summary: Vacía el el carrito.
+      security:
+        - cookieAuth: []
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id del carrito solicitado
+        schema:
+          oneOf:
+            - type: String
+            - type: integer
+      responses:
+        "200":
+          description: Se vació el carrito correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "401":
+           description: Credenciales faltantes o erróneas.
+        "500":
+          description: Error interno del servidor, los errores varían según el código. ver archivo "enum.js" en "tools".
+  /api/carts/product/{pid}:
+    delete:
+      summary: Elimina un producto de un carrito. (el ID del carrito es recibido de cokkie con token JWT)
+      security:
+        - cookieAuth: []
+      tags:
+        - Carts
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto solicitado
+        schema:
+          oneOf:
+            - type: String
+            - type: integer
+      responses:
+        "200":
+          description: Se eliminó el producto del carrito solicitado correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "401":
+           description: Credenciales faltantes o erróneas.
+        "500":
+          description: Error interno del servidor, los errores varían según el código. ver archivo "enum.js" en "tools".    
+  /api/carts/addproduct/{pid}:
+    post:
+      summary: Agrega el producto y/o actualiza la cantidad de un producto en particular. (el ID del carrito es recibido de cokkie con token JWT)
+      security:
+        - cookieAuth: []
+      tags:
+        - Carts
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto
+        schema:
+          oneOf:
+            - type: String
+            - type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/quantityProduct"
+      responses:
+        "200":
+          description: Se agregó y/o actualizó el producto y cantidad correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "401":
+           description: Credenciales faltantes o erróneas.
+        "500":
+          description: Error interno del servidor, los errores varían según el código. ver archivo "enum.js" en "tools".
+  /api/carts/{cid}/product/{pid}:
+    put:
+      summary: Agrega el producto y/o actualiza la cantidad de un producto en particular. (el ID del carrito se obtiene por parámetro)
+      security:
+        - cookieAuth: []
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id del carrito
+        schema:
+          oneOf:
+            - type: String
+            - type: integer
+      - name: pid
+        in: path
+        required: true
+        description: Id del producto
+        schema:
+          oneOf:
+            - type: String
+            - type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/quantityProduct"
+      responses:
+        "200":
+          description: Se agregó y/o actualizó el producto y cantidad correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "401":
+           description: Credenciales faltantes o erróneas.
+        "500":
+          description: Error interno del servidor, los errores varían según el código. ver archivo "enum.js" en "tools".
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: cookieToken
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          oneOf:
+            - type: ObjectId
+            - type: integer
+          description: Id auto generado según la persistencia.
+        products: 
+          type: Array
+          items:
+            type: object
+            properties:
+              product: 
+                oneOf:
+                  - type: ObjectId
+                  - type: integer
+              quantity:
+                type: integer
+      example:
+        _id: ObjectID("6abcd1345qxsadfd91as0") / 12
+        products: [ {product: ObjectID("6abcd1345qxsadfd91as0"), quantity: 1}]
+  requestBodies:
+    quantityProduct:
+      type: object
+      properties:
+        quantity: 
+          type: integer
+          description: Cantidad de unidades del producto
+      example:
+        quantity: 5
