@@ -1,12 +1,10 @@
 import { generateToken, createHash, isValidPass } from "../tools/utils.js";
-import getEnvironment from "../config/process.config.js";
 import mailer from "../tools/mailer.js";
 import moment from 'moment';
 import CustomError from "../tools/customErrors/customError.js";
 import TErrors from "../tools/customErrors/enum.js";
 import { generateUserErrorInfo } from "../tools/customErrors/info.js";
 
-const env = getEnvironment();
 
 export default class UsersController {
     constructor(service) {
@@ -120,7 +118,7 @@ export default class UsersController {
                     code: TErrors.INVALID_TYPES,
                 });
             }
-            const avatarPath = `http://localhost:8080/${avatar.filename}`;
+            const avatarPath = `https://server55650-production.up.railway.app/${avatar.filename}`;
             await this.usersService.updateField(user.id, "avatar", avatarPath);
             res.status(200).send({ message: "Nueva foto de perfil recibida!", avatar: avatarPath })
         } catch (error) {
@@ -171,7 +169,7 @@ export default class UsersController {
             res.cookie("cookieToken", token, {
                 httpOnly: true,
                 maxAge: 60 * 60 * 1000,
-                secure: env.USERCOOKIESECRET
+                secure: process.env.USERCOOKIESECRET
             }).status(200).send({ email, role, cart, name, id, cartId, lastConnection, isAllDocs, lastName, avatar, documents });
         } catch (error) {
             next(error)
@@ -230,8 +228,8 @@ export default class UsersController {
             res.cookie("cookieToken", token, {
                 httpOnly: true,
                 maxAge: 60 * 60 * 1000,
-                secure: env.USERCOOKIESECRET
-            }).redirect("http://localhost:5173/");
+                secure: process.env.USERCOOKIESECRET
+            }).redirect("https://hector039.github.io/client55650/");
         } catch (error) {
             next(error)
         }
@@ -250,7 +248,7 @@ export default class UsersController {
                 });
             }
             await mailer({ mail: email, name: user.firstName },
-            `Haz click en el enlace para restaurar tu contraseña: <a href="http://localhost:5173/forgot/${email}">Restaurar</a>`)
+            `Haz click en el enlace para restaurar tu contraseña: <a href="https://hector039.github.io/client55650/forgot/${email}">Restaurar</a>`)
             res.cookie("tempCookie", "temporalCookie", { maxAge: 1000 * 60 * 60 }).status(200).send(`Se envió la solicitud de restauración a ${email}`);
         } catch (error) {
             next(error)
@@ -330,8 +328,8 @@ export default class UsersController {
         res.cookie("cookieToken", token, {
             httpOnly: true,
             maxAge: 60 * 60 * 1000,
-            secure: env.USERCOOKIESECRET
-        }).redirect("http://localhost:5173/");
+            secure: process.env.USERCOOKIESECRET
+        }).redirect("https://hector039.github.io/client55650/");
     }
 
     google = async (req, res) => { };//get
@@ -357,8 +355,8 @@ export default class UsersController {
         res.cookie("cookieToken", token, {
             httpOnly: true,
             maxAge: 60 * 60 * 1000,
-            secure: env.USERCOOKIESECRET
-        }).redirect("http://localhost:5173/");
+            secure: process.env.USERCOOKIESECRET
+        }).redirect("https://hector039.github.io/client55650/");
     }
 }
 

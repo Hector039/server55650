@@ -1,13 +1,11 @@
 import winston from "winston";
-import getEnvironment from "../config/process.config.js";
 import __dirname from "./utils.js";
 
-const env = getEnvironment();
 const { combine, timestamp, printf, align } = winston.format;
 
 const environtmentMode = () => {
-    if (env.MODE === "development") return "debug";
-    else if (env.MODE === "production") return "info";
+    if (process.env.MODE === "development") return "debug";
+    else if (process.env.MODE === "production") return "info";
     else return new Error("Invalid Environment Mode");
 }
 

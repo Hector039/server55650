@@ -1,6 +1,5 @@
 import { cartsService, usersService } from "../services/index.js";
 import passport from "passport";
-import getEnvironment from "./process.config.js";
 import local from "passport-local";
 import { createHash, isValidPass } from "../tools/utils.js";
 import GitHubStrategy from "passport-github2";
@@ -8,16 +7,15 @@ import GoogleStrategy from "passport-google-oauth20";
 import mailer from "../tools/mailer.js";
 import moment from 'moment';
 
-const env = getEnvironment();
 
 const localStrategy = local.Strategy;
 
 const initializePassport = () => {
     passport.use("google", new GoogleStrategy(
         {
-            clientID: env.GOOGLE_CLIENT_ID,
-            clientSecret: env.GOOGLE_CLIENT_SECRET,
-            callbackURL: env.GOOGLE_CALLBACK_URL,
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: process.env.GOOGLE_CALLBACK_URL,
             scope: ["profile email"]
         },
         async (accessToken, refreshToken, profile, cb) => {
@@ -66,9 +64,9 @@ const initializePassport = () => {
 
     passport.use("github", new GitHubStrategy(
         {
-            clientID: env.GH_CLIENT_ID,
-            clientSecret: env.GH_CLIENT_SECRETS,
-            callbackURL: env.GH_CALLBACK_URL,
+            clientID: process.env.GH_CLIENT_ID,
+            clientSecret: process.env.GH_CLIENT_SECRETS,
+            callbackURL: process.env.GH_CALLBACK_URL,
             scope: ["user: email"]
         },
         async (accessToken, refreshToken, profile, done) => {
@@ -130,7 +128,7 @@ const initializePassport = () => {
                 });
 
                 await mailer({ mail: email, name: firstName },
-                    `Bienvenido a nuestro e-commerce!, para terminar el registro, verifica tu cuenta: <a href="http://localhost:8080/api/sessions/userverification/${email}">Activar cuenta</a>`
+                    `Bienvenido a nuestro e-commerce!, para terminar el registro, verifica tu cuenta: <a href="https://server55650-production.up.railway.app/api/sessions/userverification/${email}">Activar cuenta</a>`
                 )
                 return done(null, email);
             } catch (error) {

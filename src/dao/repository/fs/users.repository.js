@@ -110,7 +110,7 @@ export default class UserService {
             const role = "user";
             const verified = false
             const last_connection = null;
-            const avatar = "http://localhost:8080/userguest3.png";
+            const avatar = "https://server55650-production.up.railway.app/userguest3.png";
             let documents = [];
             const users = await this.getAllUsers();
 

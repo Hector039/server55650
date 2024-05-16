@@ -3,9 +3,7 @@ import CustomError from "../tools/customErrors/customError.js";
 import TErrors from "../tools/customErrors/enum.js";
 import { generateCartErrorInfo } from "../tools/customErrors/info.js";
 import { MercadoPagoConfig, Preference } from "mercadopago";
-import getEnvironment from "../config/process.config.js";
 
-const env = getEnvironment();
 
 export default class TicketsController {
     constructor(ticketsService, cartsService) {
@@ -30,9 +28,9 @@ export default class TicketsController {
                 const body = {
                 items: preferenceItems,
                 back_urls: {
-                    "success": "https://528b-2803-9800-9802-502e-28d4-c62d-63d-de01.ngrok-free.app/api/tickets/success",
-                    "failure": "https://f929-2803-9800-9802-502e-28d4-c62d-63d-de01.ngrok-free.app/api/tickets/failure",
-                    "pending": "https://f929-2803-9800-9802-502e-28d4-c62d-63d-de01.ngrok-free.app/api/tickets/pending"
+                    "success": "https://server55650-production.up.railway.app/api/tickets/success",
+                    "failure": "https://server55650-production.up.railway.app/api/tickets/failure",
+                    "pending": "https://server55650-production.up.railway.app/api/tickets/pending"
                 },
                 auto_return: "approved",
                 excluded_payment_types: [
@@ -43,7 +41,7 @@ export default class TicketsController {
                 external_reference: purchaserEmail,
             }
 
-            const client = new MercadoPagoConfig({ accessToken: env.MP_ACCESS_TOKEN, options: { timeout: 5000 } })
+            const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN, options: { timeout: 5000 } })
             const preference = new Preference(client);
             const result = await preference.create({ body });
             return res.status(200).send({ id: result.id })
@@ -81,7 +79,7 @@ export default class TicketsController {
             if (status === "approved") {
                 await this.ticketsService.purchaseTicket(external_reference, status, payment_id, payment_type);
                 await mailer({ mail: external_reference, name: "usuario" }, "Compra confirmada!. podés ver el ticket en el apartado dentro de tu carrito.")
-                res.status(200).redirect("http://localhost:5173");
+                res.status(200).redirect("https://hector039.github.io/client55650/");
             }
         } catch (error) {
             next(error)

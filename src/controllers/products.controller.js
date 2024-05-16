@@ -143,7 +143,7 @@ export default class ProductsController {
                 const filesPaths = [];
                 prodPic.forEach(pic => {
                     fs.renameSync(`${pic.destination}/${pic.filename}`, `${pic.destination}/${updatedProduct._id}-${pic.filename}`)
-                    filesPaths.push(`http://localhost:8080/${updatedProduct._id}-${pic.filename}`)
+                    filesPaths.push(`https://server55650-production.up.railway.app/${updatedProduct._id}-${pic.filename}`)
                 });
                 await this.productsService.updateProductThumbnail(updatedProduct._id, filesPaths);
             }

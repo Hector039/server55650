@@ -4,8 +4,8 @@ export const passportCall = strategy => {
     return async (req, res, next) => {
         passport.authenticate(strategy,
             {
-                successRedirect: "http://localhost:5173/",
-                failureRedirect: "http://localhost:5173/account"
+                successRedirect: "https://hector039.github.io/client55650/",
+                failureRedirect: "https://hector039.github.io/client55650/account"
             },
             function (error, user, info) {
                 if (error) return next(error);

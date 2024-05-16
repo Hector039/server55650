@@ -144,7 +144,6 @@ export default class CartService {
             });
             cartsUpdated[cartIndex]["products"] = cartProducts
             return cartsUpdated[cartIndex];
-            return cartInfo;
         } catch (error) {
             throw error;
         }

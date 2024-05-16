@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, require: true, unique: true },
     password: { type: String, require: true, max: 8 },
     role: { type: String, default: "user" },
-    avatar: { type: String, default: "http://localhost:8080/userguest3.png" },
+    avatar: { type: String, default: "https://server55650-production.up.railway.app/userguest3.png" },
     idgoogle: { type: String, default: null, unique: true },
     idgithub: { type: String, default: null, unique: true },
     cart: {

@@ -1,14 +1,11 @@
-import getEnvironment from "../../config/process.config.js";
 import mongoLoader from "../../loaders/mongoose.js";
 import models from "../models/index.js";
 
-const env = getEnvironment();
-
 export let usersRepository, productsRepository, cartsRepository, ticketsRepository;
 
-switch (env.PERSISTENCE) {
+switch (process.env.PERSISTENCE) {
     case "DATABASE":
-        const monogLoader = await mongoLoader(env.DB_URL);
+        const monogLoader = await mongoLoader(process.env.DB_URL);
         console.log(monogLoader);
 
         const { default: usersDB } = await import("../repository/db/users.repository.js");

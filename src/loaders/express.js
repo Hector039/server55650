@@ -3,7 +3,6 @@ import indexRoute from "../routes/index.route.js";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import initializePassport from "../config/passport.config.js";
-import getEnvironment from "../config/process.config.js";
 import __dirname from "../tools/utils.js";
 import cors from "cors";
 import session from "express-session";
@@ -14,15 +13,14 @@ import { addLogger } from "../tools/winstonLogger.js";
 import { productsImgPath } from "../data/products/pathProducts.js";
 import { profilesImgPath } from "../data/profiles/pathProfiles.js";
 
-const env = getEnvironment();
 
 const corsOptions = {
-    origin: "http://localhost:5173",
+    origin: "https://hector039.github.io/client55650/",
     credentials: true,
 };
 
 export default async function appLoader(app) {
-    app.use(cookieParser(env.USERCOOKIESECRET));
+    app.use(cookieParser(process.env.USERCOOKIESECRET));
     app.use(cors(corsOptions));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
@@ -31,7 +29,7 @@ export default async function appLoader(app) {
     app.use(express.static(profilesImgPath));
     app.use(addLogger);
     app.use(session({
-        secret: env.USERCOOKIESECRET,
+        secret: process.env.USERCOOKIESECRET,
         resave: false,
         saveUninitialized: true
     }));

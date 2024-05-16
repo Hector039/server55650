@@ -17,7 +17,7 @@ const swaggerOptions = {
                 name: "Hector Mandril",
                 email: "elector22@gmail.com"
             },
-            servers: ["http://localhost:8080"]
+            servers: ["https://server55650-production.up.railway.app/"]
         }
     },
     apis: [`${__dirname}/docs/**/*.yaml`]

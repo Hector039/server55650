@@ -1,15 +1,12 @@
 import nodemailer from "nodemailer";
-import getEnvironment from "../config/process.config.js";
 import __dirname from "../tools/utils.js";
-
-const env = getEnvironment()
 
 const transport = nodemailer.createTransport({
     service: "gmail",
     port: 587,
     auth: {
-        user: env.MAILER_USER,
-        pass: env.MAILER_PASSWORD
+        user: process.env.MAILER_USER,
+        pass: process.env.MAILER_PASSWORD
     }
 })
 
@@ -21,8 +18,8 @@ export default class ContactController {
             const telephone = !tel ? "Sin datos" : tel
 
             await transport.sendMail({
-                from: `Coder Test ${env.MAILER_USER}`,
-                to: env.MAILER_USER,
+                from: `Coder Test ${process.env.MAILER_USER}`,
+                to: process.env.MAILER_USER,
                 subject: `${name} envió una consulta.`,
                 html: `
             <div>
