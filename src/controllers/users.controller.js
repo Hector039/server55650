@@ -303,7 +303,11 @@ export default class UsersController {
     }
 
     userLogout = async (req, res) => {
-        res.clearCookie('cookieToken');
+        res.clearCookie('cookieToken', {
+            httpOnly: false,
+            secure: process.env.USERCOOKIESECRET,
+            sameSite: "none"
+        });
         return res.status(200).send("Usuario deslogueado!");
     }
 
