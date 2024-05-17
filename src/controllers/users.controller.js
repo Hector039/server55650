@@ -221,11 +221,20 @@ export default class UsersController {
             await this.usersService.userVerification(email);
             const user = await this.usersService.getUser(email);
             const role = user.role;
+            const avatar = user.avatar;
             const cart = user.userCart;
             const cartId = typeof user.cart === "object" ? user.cart._id : user.cart;
             const name = user.firstName;
+            const lastName = user.lastName;
             const id = user._id;
-            let token = generateToken({ email, role, cart, name, id, cartId });
+            const lastConnection = user.last_connection;
+            const documents = user.documents;
+            const docs = ["idDoc", "adressDoc", "accountDoc"];
+            const isAllDocs = docs.filter(doc => {
+                const docsExists = documents.find(e => e.name === doc)
+                if (!docsExists) return true;
+            });
+            let token = generateToken({ email, role, cart, name, id, cartId, lastConnection, lastName, isAllDocs, avatar, documents });
             res.cookie("cookieToken", token, {
                 httpOnly: false,
                 maxAge: 60 * 60 * 1000,
