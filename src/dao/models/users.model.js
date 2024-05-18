@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import moment from "moment";
 
 const userCollection = "users";
 
@@ -24,7 +25,7 @@ const userSchema = new mongoose.Schema({
                 _id: false,
             }
         ],
-    last_connection: { type: String, default: null }
+    last_connection: { type: String, default: moment().format("DD MM YYYY, h:mm:ss a") }
 });
 
 const usersModel = mongoose.model(userCollection, userSchema);

@@ -1,4 +1,5 @@
 import fs from "fs";
+import moment from "moment";
 
 class User {
     constructor(id, firstName, lastName, email, password, role, idgoogle, idgithub, cart, verified, documents, last_connection, avatar) {
@@ -109,7 +110,7 @@ export default class UserService {
         try {
             const role = "user";
             const verified = false
-            const last_connection = null;
+            const last_connection = moment().format("DD MM YYYY, h:mm:ss a");
             const avatar = "https://server55650-production.up.railway.app/userguest3.png";
             let documents = [];
             const users = await this.getAllUsers();
